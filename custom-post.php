@@ -19,25 +19,7 @@ class Custom_Post
 	{
 		add_action( 'init', array(&$this, 'wpdev_register_custom_post') );
 		add_action( 'init', array(&$this, 'wpdev_register_custom_taxonomies') );
-		//add_action('admin_menu', array(&$this, 'wpdev_register_admin_menu'));
-		//add_action( 'wp_enqueue_scripts', array(&$this, 'wpdev_enqueue') );
 	}
-
-    /**
-	 * Enqueue scripts
-	 *
-	 * @param string $handle Script name
-	 * @param string $src Script url
-	 * @param array $deps (optional) Array of script names on which this script depends
-	 * @param string|bool $ver (optional) Script version (used for cache busting), set to null to disable
-	 * @param bool $in_footer (optional) Whether to enqueue the script before </head> or before </body>
-	 *
-	function wpdev_enqueue() {
-		wp_register_script('bootstrap_js',get_template_directory_uri().'/js/bootstrap.min.js',array('jquery'), NULL, true );
-		wp_register_style('bootstrap_css',get_template_directory_uri().'/css/bootstrap.min.css', false, NULL, all );
-		wp_enqueue_script( 'bootstrap_js' );
-		wp_enqueue_style( 'bootstrap_css' );
-	}*/
 
 	/**
 	* Registers a new post type
