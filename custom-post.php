@@ -1,7 +1,14 @@
 <?php 
 /**
-* Custom Post Class
-*/
+ * Plugin Name: My Plugin
+ * Plugin URI: https://dawpguys.com
+ * Description: This is just a demo plugin.
+ * Author: Sujit
+ * Author URI: https://dawpguys.com
+ * Lisence: gplv2
+ * Version: 1.1
+ */
+
 class Custom_Post
 {
 	public $cp_slug_name = "wpdev-portfolio";
@@ -19,8 +26,11 @@ class Custom_Post
 	{
 		add_action( 'init', array(&$this, 'wpdev_register_custom_post') );
 		add_action( 'init', array(&$this, 'wpdev_register_custom_taxonomies') );
+		add_action('admin_menu', array(&$this, 'wpdev_register_admin_menu'));
+		add_action( 'admin_init', array(&$this, 'wpdev_intialize_admin_section') );
 	}
 
+    
 	/**
 	* Registers a new post type
 	* @uses $wp_post_types Inserts new post type object into the list
@@ -129,6 +139,95 @@ function wpdev_register_custom_taxonomies() {
 	register_taxonomy( $slug, $cp_name, $args );
 	}
 
+/**
+ * 
+ * ADMIN MENU SECTION
+ * 
+ */
+
+function wpdev_register_admin_menu(){
+	
+	add_options_page( 
+		'My Plugin', 
+		'My Plugin', 
+		'manage_options', 
+		'my-plugin', 
+		array(&$this,'wpdev_setup_page'), 
+		'dashicons-store' );
 }
+
+function wpdev_intialize_admin_section(){
+
+	add_settings_section( 
+		'cpt-section', 
+		'Custom Post Type', 
+		array(&$this,'wpdev_settings_section_callback'), 
+		'My Plugin' );
+
+	add_settings_field( 
+		'cpt-fields', 
+		'Custom Post Type', 
+		array(&$this,'wpdev_settings_field_callback'), 
+		'My Plugin', 
+		'cpt-section');
+
+	register_setting( 'cpt-section', 'cpt-fields');
+	}
+
+/**
+ * 
+ * CALLBACK FUNCTIONS
+ * 
+ */
+function wpdev_setup_page(){
+	?>
+	<div class="wrap">
+	<div id="icon-options-general" class="icon-32"></div>
+	<h1>Custom Post Setup</h1>
+	<form method="post" action="option.php">
+	<?php 		
+		//Render settings for settings section
+		settings_fields('cpt-section');
+
+		//Render all the settings for CPT Option page Section
+		do_settings_sections( 'my-plugin' );
+
+		//Add submit button to serialize all the options
+		submit_button();
+	?>
+		
+	</form>
+	</div><!--End of div wrap-->
+
+<?php
+	}
+
+function wpdev_settings_section_callback(){
+	echo "TODO";
+}
+
+function wpdev_settings_field_callback(){echo '<input type="text" value="hello world">';
+	?><table class="form-table">
+		<tbody>
+			<tr>
+				<th scope="row"><label for="singular_name"><?php _e( 'Singular Name' ) ?></label></th>
+				<td><input type="text" class="regular-text" name="cp_singular" value="<?php $cp_singular ?>"></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="plural_name"><?php _e( 'Plural Name' ) ?></label></th>
+				<td><input type="text" class="regular-text" name="cp_plural" value="<?php $cp_plural ?>"></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="cp_slug_name"><?php _e( 'CP Slug Name' ) ?></label></th>
+				<td><input type="text" class="regular-text" name="cp_slug_name" value="<?php $cp_slug_name ?>"></td>
+			</tr>
+			<tr>
+				<th scope="row"><td><input type="submit" class="button" name="submit" value="Submit" /></td></th>
+			</tr>
+		</tbody>
+		</table><?php 
+	}
+
+}//Class End
 
 $my_cp = new Custom_Post();
