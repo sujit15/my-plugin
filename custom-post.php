@@ -11,13 +11,13 @@
 
 class Custom_Post
 {
-	public $cp_slug_name = "wpdev-portfolio";
-	public $taxo_slug_name = "wpdev-taxonomy";
+	public $cp_singular = Portfolio;
+	public $cp_plural = Portfolios;
+	public $cp_slug_name = portfolio;
 
-	public $cp_singular = "Portfolio";
-	public $cp_plural = "Portfolios";
-	public $taxo_singular = "Category";
-	public $taxo_plural = "Categories";
+	public $taxo_singular = Category;
+	public $taxo_plural = Categories;
+	public $taxo_slug_name = category;
 	
 	/*
 	Intialize all actions
@@ -147,13 +147,13 @@ function wpdev_register_custom_taxonomies() {
 
 function wpdev_register_admin_menu(){
 	
-	add_options_page( 
+	add_menu_page( 
 		'My Plugin', 
 		'My Plugin', 
 		'manage_options', 
 		'my-plugin', 
 		array(&$this,'wpdev_setup_page'), 
-		'dashicons-store' );
+		'' );
 }
 
 function wpdev_intialize_admin_section(){
@@ -162,13 +162,13 @@ function wpdev_intialize_admin_section(){
 		'cpt-section', 
 		'Custom Post Type', 
 		array(&$this,'wpdev_settings_section_callback'), 
-		'My Plugin' );
+		'my-plugin' );
 
 	add_settings_field( 
 		'cpt-fields', 
 		'Custom Post Type', 
 		array(&$this,'wpdev_settings_field_callback'), 
-		'My Plugin', 
+		'my-plugin', 
 		'cpt-section');
 
 	register_setting( 'cpt-section', 'cpt-fields');
@@ -203,29 +203,41 @@ function wpdev_setup_page(){
 	}
 
 function wpdev_settings_section_callback(){
-	echo "TODO";
-}
-
-function wpdev_settings_field_callback(){echo '<input type="text" value="hello world">';
 	?><table class="form-table">
 		<tbody>
+		</tbody>
+	</table>
+	<?php
+}
+
+function wpdev_settings_field_callback(){
+	?>
 			<tr>
 				<th scope="row"><label for="singular_name"><?php _e( 'Singular Name' ) ?></label></th>
-				<td><input type="text" class="regular-text" name="cp_singular" value="<?php $cp_singular ?>"></td>
+				<td><input type="text" class="regular-text" name="cp_singular" value=""></td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="plural_name"><?php _e( 'Plural Name' ) ?></label></th>
-				<td><input type="text" class="regular-text" name="cp_plural" value="<?php $cp_plural ?>"></td>
+				<td><input type="text" class="regular-text" name="cp_plural" value=""></td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="cp_slug_name"><?php _e( 'CP Slug Name' ) ?></label></th>
-				<td><input type="text" class="regular-text" name="cp_slug_name" value="<?php $cp_slug_name ?>"></td>
+				<td><input type="text" class="regular-text" name="cp_slug_name" value=""></td>
+			</tr>
+
+			<tr>
+				<th scope="row"><label for="cp_slug_name"><?php _e( 'Taxonomy Singular Name' ) ?></label></th>
+				<td><input type="text" class="regular-text" name="taxo_singular" value=""></td>
 			</tr>
 			<tr>
-				<th scope="row"><td><input type="submit" class="button" name="submit" value="Submit" /></td></th>
+				<th scope="row"><label for="cp_slug_name"><?php _e( 'Taxonomy Plural Name' ) ?></label></th>
+				<td><input type="text" class="regular-text" name="taxo_plural" value=""></td>
 			</tr>
-		</tbody>
-		</table><?php 
+			<tr>
+				<th scope="row"><label for="taxo_slug_name"><?php _e( 'Taxonomy Slug Name' ) ?></label></th>
+				<td><input type="text" class="regular-text" name="cp_slug_name" value=""></td>
+			</tr>
+		<?php 
 	}
 
 }//Class End
